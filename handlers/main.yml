@@ -1,0 +1,5 @@
+---
+- name: restart_plexmediaserver
+  service: 
+    name: plexmediaserver
+    state: restarted

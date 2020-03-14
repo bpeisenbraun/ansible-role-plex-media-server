@@ -1,0 +1,29 @@
+---
+- name: Add Plex repo package key
+  apt_key:
+    url: https://downloads.plex.tv/plex-keys/PlexSign.key
+    state: present
+
+- name: Add Plex package repo
+  apt_repository:
+    repo: deb https://downloads.plex.tv/repo/deb public main
+    state: present
+
+- name: Install Plex media server package
+  apt:
+    name: plexmediaserver
+    state: present
+
+- name: Make our media directories
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - /media/myth
+    - /media/plex
+
+- name: Convenience symlink for Plex logs
+  file:
+    src: "/var/lib/plexmediaserver/Library/Application Support/Plex Media Server/Logs"
+    dest: /var/log/plex
+    state: link
